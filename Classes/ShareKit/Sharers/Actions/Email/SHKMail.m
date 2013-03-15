@@ -118,16 +118,6 @@
 	{
 		body = @"";
 		
-		if (self.item.URL != nil)
-		{
-			NSString *urlStr = [self.item.URL.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			
-			if (isHTML)
-				body = [body stringByAppendingFormat:@"%@%@", separator, urlStr];
-			else
-				body = urlStr;
-		}
-		
 		if (self.item.data)
 		{
 			NSString *attachedStr = SHKLocalizedString(@"Attached: %@", self.item.title ? self.item.title : self.item.filename);
@@ -161,6 +151,15 @@
         
         CGFloat jpgQuality = self.item.mailJPGQuality;
         [mailController addAttachmentData:UIImageJPEGRepresentation(self.item.image, jpgQuality) mimeType:@"image/jpeg" fileName:@"Image.jpg"];
+	}
+
+	if (self.item.URL != nil) {
+		NSString *urlStr = [self.item.URL.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		
+		if (isHTML)
+			body = [body stringByAppendingFormat:@"%@%@", separator, urlStr];
+		else
+			body = urlStr;
 	}
 	
 	[mailController setSubject:self.item.title];
